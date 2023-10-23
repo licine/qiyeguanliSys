@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+
+  <!-- 新建城市按钮 -->
+  <div style="margin-bottom: 10px">
+    <a href="/city/add/" class="btn btn-success">
+      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      新建城市
+    </a>
+
+    <!-- 搜索 -->
+    <div style="float: right; width: 300px;">
+      <form action="" method="get">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{search_data}}">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+
+
+  <!-- 城市列表 -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+      城市列表
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>LOGO</th>
+          <th>名称</th>
+          <th>人数</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for obj in queryset %}
+        <tr>
+          <th>{{ obj.id }}</th>
+          <td>
+            <img src="/media/{{ obj.img }}" style="height: 88px;">
+          </td>
+          <td>{{ obj.name }}</td>
+          <td>{{ obj.count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="pagination">
+    {{ page_string }}
+  </ul>
+
+</div>
+{% endblock %}

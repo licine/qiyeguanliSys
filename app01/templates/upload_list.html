@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="uername">
+        <input type="file" name="avatar">
+        <input type="submit" name="提 交">
+    </form>
+</div>
+
+{% endblock %}

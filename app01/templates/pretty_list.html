@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+  <!-- clearfix清除浮动 -->
+    <div style="margin-bottom: 10px" class="clearfix"> 
+      <a href="/pretty/add/" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        添加手机号
+      </a>
+      <!-- 搜索 -->
+      <div style="float: right; width: 300px;">
+        <form action="" method="get">
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{search_data}}">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        手机号列表
+      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>手机号</th>
+            <th>价格</th>
+            <th>等级</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obj in queryset %}
+            <tr>
+              <th>{{ obj.id }}</th>
+              <td>{{ obj.mobile }}</td>
+              <td>{{ obj.price }}</td>
+              <td>{{ obj.get_level_display }}</td>
+              <td>{{ obj.get_status_display }}</td>
+              <td>
+                <a href="/pretty/{{obj.id}}/edit/" class="btn btn-primary btn-xs" >编辑</a>
+                <a href="/pretty/{{obj.id}}/delete/" class="btn btn-danger btn-xs">删除</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    
+    <ul class="pagination">
+      {{ page_string }}
+   </ul>
+   
+</div>
+  
+{% endblock content %}

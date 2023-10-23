@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{title}}</h3>
+        </div>
+        <div class="panel-body">
+            <form method="post" enctype="multipart/form-data" novalidate> <!--novalidate： 浏览器不做校验,浏览器校验不准确  -->
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="form-group">
+                        <label>{{field.label}}</label>
+                        {{field}}
+                        <span style="color: red;" >{{field.errors.0}}</span> <!-- 错误信息可能有多个，以列表的形式存储。0即取第一个错误信息 -->
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn btn-primary">提 交</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

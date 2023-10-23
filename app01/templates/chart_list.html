@@ -1,0 +1,186 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+    <!-- 折线图 -->
+    <div class="panel panel-default">
+        <div class="panel-heading">分公司业绩分析</div>
+        <div class="panel-body">
+            <div id="chart_line" style="width: 100%;height:300px;"></div>
+        </div>
+    </div>
+
+    <!-- 柱状图和饼图 -->
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">员工业绩汇总</div>
+                <div class="panel-body">
+                    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+                    <div id="chart_bar" style="width: 100%;height:400px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">部门预算占比</div>
+                <div class="panel-body">
+                    <div id="chart_pie" style="width: 100%;height:400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+
+    $(function () {
+        initBar();
+        initPie();
+        initLine();
+    })
+
+    function initBar() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_bar'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '员工业绩汇总',
+                textAlign: 'auto',
+                left: 'center',
+            },
+            tooltip: {},
+            legend: {
+                data: [],
+                bottom: 0,
+            },
+            xAxis: {
+                data: [],
+            },
+            yAxis: {},
+            series: []
+        };
+
+        $.ajax({
+            url: '/chart/bar/',
+            type: "get",
+            dataType: "JSON",
+            success: function (res) {       // 成功之后
+                if (res.status) {
+                    option.legend.data = res.data.legend;
+                    option.xAxis.data = res.data.x_axis;
+                    option.series = res.data.series_list;
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                } else {
+
+                }
+            }
+        })
+
+    }
+
+    function initPie() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_pie'));
+
+        var option = {
+            title: {
+                text: '部门预算占比',
+                subtext: '广西分公司',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                bottom: 0,
+            },
+            series: [
+                {
+                    name: '预算',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        $.ajax({
+            url: '/chart/pie/',
+            type: "get",
+            dataType: "JSON",
+            success: function (res) {       // 成功之后
+                if (res.status) {
+                    option.series[0].data = res.data.series_data;
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                } else {}
+            }
+        })
+
+    }
+
+    function initLine() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('chart_line'));
+
+        var option = {
+            title: {
+                text: '分公司业绩图',
+                left: 'center',
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [],
+                bottom: 0,
+            },
+
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+
+            ]
+        };
+        $.ajax({
+            url: '/chart/line/',
+            type: "get",
+            dataType: "JSON",
+            success: function (res) {       // 成功之后
+                if (res.status) {
+                    option.series = res.data.series_data;
+                    option.legend.data = res.data.legend_data;
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                } else { }
+            }
+        })
+
+    }
+
+</script>
+
+{% endblock %}

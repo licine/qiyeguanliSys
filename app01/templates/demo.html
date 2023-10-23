@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<input name="hotelImgFile" id="hotelImgFile" type="file" style="display: none"/>   
+<div class="input-append">						          
+       <input id="photoCover" type="text" class="form-control"			
+        style="float: left; width: 350px" >        <a class="btn btn-default" style="border-radius: 0px; width: 50px"
+        onclick="$('input[id=hotelImgFile]').click();">浏览</a>
+</div> 
+{% endblock %}
+ 
+ {% block js %}
+
+ <script type="text/javascript">
+	$('input[id=hotelImgFile]').change(function() {
+		   $('#photoCover').val($(this).val());
+		});
+</script>
+
+ {% endblock %}
+ 
+ 
+ 
+ 
+ 
